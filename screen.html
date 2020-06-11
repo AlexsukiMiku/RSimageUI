@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>分屏对比</title>
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery.js"></script>
+<script src="js/e-smart-zoom-jquery.min.js"></script>
+</head>
+<body>
+<div id="pageContain">
+<div class="beforeafter" >
+   <div id=left-top>
+    <ul id="accordion1" class="accordion" >
+        <li>
+            <div class="link">图像年份<i class="fa fa-chevron-down"></i>
+            </div>
+            <ul class="submenu">
+                <li><a id="1_2010" >2010</a>
+                </li>
+                <li><a id="1_2011">2011</a>
+                </li>
+                <li><a id="1_2015">2015</a>
+                </li>
+    
+            </ul>
+        </li>
+    </ul>
+   </div>
+   <div id=left-bottom>
+    <ul id="accordion2" class="accordion" >
+        <li>
+            <div class="link">图像年份<i class="fa fa-chevron-down"></i>
+            </div>
+            <ul class="submenu">
+                <li><a id="2_2010" >2010</a>
+                </li>
+                <li><a id="2_2011">2011</a>
+                </li>
+                <li><a id="2_2015">2015</a>
+                </li>
+    
+            </ul>
+        </li>
+    </ul>
+   </div>
+   <div id=right-top>
+    <ul id="accordion3" class="accordion" >
+        <li>
+            <div class="link">图像年份<i class="fa fa-chevron-down"></i>
+            </div>
+            <ul class="submenu">
+                <li><a id="3_2010" >2010</a>
+                </li>
+                <li><a id="3_2011">2011</a>
+                </li>
+                <li><a id="3_2015">2015</a>
+                </li>
+    
+            </ul>
+        </li>
+    </ul>
+   </div>
+   <div id=right-bottom>
+    <ul id="accordion4" class="accordion" >
+        <li>
+            <div class="link">图像年份<i class="fa fa-chevron-down"></i>
+            </div>
+            <ul class="submenu">
+                <li><a id="4_2010" >2010</a>
+                </li>
+                <li><a id="4_2011">2011</a>
+                </li>
+                <li><a id="4_2015">2015</a>
+                </li>
+    
+            </ul>
+        </li>
+    </ul>
+   </div>
+</div>
+</div>
+<div id="positionButtonDiv">
+    <p><span> <img id="zoomInButton" class="zoomButton" src="img/zoomIn.png" title="zoom in" alt="zoom in" /> 
+        <img id="zoomOutButton" class="zoomButton" src="img/zoomOut.png" title="zoom out" alt="zoom out" /> </span> </p>
+    <p>
+    <span class="positionButtonSpan">
+        <map name="positionMap" class="positionMapClass">
+            <area id="topPositionMap" shape="rect" coords="20,0,40,20" title="move up" alt="move up"/>
+            <area id="leftPositionMap" shape="rect" coords="0,20,20,40" title="move left" alt="move left"/>
+            <area id="rightPositionMap" shape="rect" coords="40,20,60,40" title="move right" alt="move right"/>
+            <area id="bottomPositionMap" shape="rect" coords="20,40,40,60" title="move bottom" alt="move bottom"/>
+        </map>
+        <img src="img/position.png" usemap="#positionMap" />
+     </span>
+     </p>
+</div>
+<script> 
+    $(function(){
+        
+        //放大镜
+        $('.beforeafter').smartZoom({'containerClass':'zoomableContainer'});
+        $('#topPositionMap,#leftPositionMap,#rightPositionMap,#bottomPositionMap').bind("click", moveButtonClickHandler);
+        $('#zoomInButton,#zoomOutButton').bind("click", zoomButtonClickHandler);
+        
+
+        function zoomButtonClickHandler(e){
+            var scaleToAdd = 0.8;
+            if(e.target.id == 'zoomOutButton')
+                scaleToAdd = -scaleToAdd;
+            $('.beforeafter').smartZoom('zoom', scaleToAdd);
+        }        
+        function moveButtonClickHandler(e){
+            var pixelsToMoveOnX = 0;
+            var pixelsToMoveOnY = 0;
+    
+            switch(e.target.id){
+                case "leftPositionMap":
+                    pixelsToMoveOnX = 100;	
+                break;
+                case "rightPositionMap":
+                    pixelsToMoveOnX = -100;
+                break;
+                case "topPositionMap":
+                    pixelsToMoveOnY = 100;	
+                break;
+                case "bottomPositionMap":
+                    pixelsToMoveOnY = -100;	
+                break;
+            }
+            $('.beforeafter').smartZoom('pan', pixelsToMoveOnX, pixelsToMoveOnY);
+        } 
+
+
+        //下拉菜单
+      var Accordion = function(el, multiple) {
+      this.el = el || {};
+      this.multiple = multiple || false;
+
+      // Variables privadas
+      var links = this.el.find('.link');
+      // Evento
+      links.on('click', {
+          el: this.el,
+          multiple: this.multiple
+      }, this.dropdown)
+  }
+
+  Accordion.prototype.dropdown = function(e) {
+      var $el = e.data.el;
+      $this = $(this),
+          $next = $this.next();
+
+      $next.slideToggle();
+      $this.parent().toggleClass('open');
+
+      if (!e.data.multiple) {
+          $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+      };
+  }
+
+  var accordion1 = new Accordion($('#accordion1'), false);
+  var accordion2 = new Accordion($('#accordion2'), false);
+  var accordion3 = new Accordion($('#accordion3'), false);
+  var accordion4 = new Accordion($('#accordion4'), false);
+  //切换图片
+  $('#1_2010').click(function(){
+     $('#left-top').css("background-image","url(img/2010.jpg)");
+  });
+  $('#1_2011').click(function(){
+     $('#left-top').css("background-image","url(img/2011.jpg)");
+  });
+  $('#1_2015').click(function(){
+     $('#left-top').css("background-image","url(img/2015.jpg)");
+  });
+  $('#2_2010').click(function(){
+     $('#left-bottom').css("background-image","url(img/2010.jpg)");
+  });
+  $('#2_2011').click(function(){
+     $('#left-bottom').css("background-image","url(img/2011.jpg)");
+  });
+  $('#2_2015').click(function(){
+     $('#left-bottom').css("background-image","url(img/2015.jpg)");
+  });
+  $('#3_2010').click(function(){
+     $('#right-top').css("background-image","url(img/2010.jpg)");
+  });
+  $('#3_2011').click(function(){
+     $('#right-top').css("background-image","url(img/2011.jpg)");
+  });
+  $('#3_2015').click(function(){
+     $('#right-top').css("background-image","url(img/2015.jpg)");
+  });
+  $('#4_2010').click(function(){
+     $('#right-bottom').css("background-image","url(img/2010.jpg)");
+  });
+  $('#4_2011').click(function(){
+     $('#right-bottom').css("background-image","url(img/2011.jpg)");
+  });
+  $('#4_2015').click(function(){
+     $('#right-bottom').css("background-image","url(img/2015.jpg)");
+  });
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>大科城遥感图像</title>
+<link href="css/hello.css" rel="stylesheet" type="text/css" />
+<script>
+    window.nodeRequire = require;
+    delete window.require;
+    delete window.exports;
+    delete window.module;
+</script>
+<script src="js/jquery.js"></script>
+<script src="js/e-smart-zoom-jquery.min.js"></script>
+</head>
+<body>
+<h1>大科城图片</h1>
+<ul id="accordion" class="accordion">
+    <li>
+        <div class="link"><i class="fa fa-paint-brush"></i>卫星影像<i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="submenu">
+            <li><a id="standard" >水平卷帘</a>
+            </li>
+            <li><a id="vertical">垂直卷帘</a>
+            </li>
+            <li><a id="screen">分屏对比</a>
+            </li>
+
+        </ul>
+    </li>
+    <li>
+        <div class="link"><i class="fa fa-code"></i>基础信息<i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="submenu">
+            <li><a href="#">1</a>
+            </li>
+            <li><a href="#">1</a>
+            </li>
+            <li><a href="#">2 2</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <div class="link"><i class="fa fa-mobile"></i>精准扶贫<i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="submenu">
+            <li><a href="#">1</a>
+            </li>
+            <li><a href="#">2</a>
+            </li>
+            <li><a href="#">3</a>
+            </li>
+            <li><a href="#">4</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <div class="link"><i class="fa fa-globe"></i>基本概况<i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="submenu">
+            <li><a href="#">简介</a>
+            </li>
+            <li><a href="#">背景</a>
+            </li>
+            <li><a href="#">现状</a>
+            </li>
+            <li><a href="#">环境</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<div class="contentpart">
+        <h2>使用传输可靠的TCP协议。
+          TCP协议使用连续ARQ协议对流量实现控制并且确认数据被接收。
+          TCP能够进行流量控制，拥堵控制和超时重传。
+          TCP 连接的每一端都必须设有两个窗口——一个
+          发送窗口和一个接收窗口。TCP 的可靠传输机制
+          用字节的序号进行控制。</h2>
+</div>
+
+<script>
+//水平分帘
+const {BrowserWindow} = nodeRequire('electron').remote;
+let vertical = document.getElementById('vertical');
+let standard = document.getElementById('standard');
+let screen = document.getElementById('screen');
+standard.addEventListener('click',function(event){
+    let win = new BrowserWindow({ width: 800, height: 600 });
+    win.loadURL(`file://${__dirname}/standard.html`);
+    win.on("close",function(){
+         win = null;
+    });
+});
+//垂直
+vertical.addEventListener('click',function(event){
+    let win = new BrowserWindow({ width: 800, height: 600 });
+    win.loadURL(`file://${__dirname}/vertical.html`);
+    win.on("close",function(){
+         win = null;
+    });
+});
+//分屏
+screen.addEventListener('click',function(event){
+    let win = new BrowserWindow({ width: 920, height: 750,resizable:false });
+    win.loadURL(`file://${__dirname}/screen.html`);
+    win.on("close",function(){
+         win = null;
+    });
+});
+
+  $(function() {
+  var Accordion = function(el, multiple) {
+      this.el = el || {};
+      this.multiple = multiple || false;
+
+      // Variables privadas
+      var links = this.el.find('.link');
+      // Evento
+      links.on('click', {
+          el: this.el,
+          multiple: this.multiple
+      }, this.dropdown)
+  }
+
+  Accordion.prototype.dropdown = function(e) {
+      var $el = e.data.el;
+      $this = $(this),
+          $next = $this.next();
+
+      $next.slideToggle();
+      $this.parent().toggleClass('open');
+
+      if (!e.data.multiple) {
+          $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+      };
+  }
+
+  var accordion = new Accordion($('#accordion'), false);
+
+});
+
+
+</script>
+</body>
+</html>
